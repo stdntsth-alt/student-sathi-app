@@ -23,8 +23,15 @@ jobs:
         with:
           channel: 'stable'
 
+      # यह कमांड मिसिंग एंड्रॉइड फ़ोल्डर और build.gradle फ़ाइलों को दोबारा बना देगा
+      - name: Repair Android Project Files
+        run: flutter create --platforms=android .
+
       - name: Get Dependencies
         run: flutter pub get
+
+      - name: Clean Project
+        run: flutter clean
 
       - name: Build APK
         run: flutter build apk --release
