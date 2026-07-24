@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -13,14 +12,14 @@ import '/backend/backend.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '/auth/firebase_auth/auth_util.dart';
 
-dynamic currentNote(
-  List<NotesRecord> notes,
-  String noteId,
-) {
-  final n = notes
-      .where((n) => n.reference.id == noteId ?? "")
-      .firstOrNull
-      ?.snapshotData;
+// ऐप को चालू करने का मुख्य फंक्शन (जो गायब था)
+void main() {
+  runApp(const MaterialApp(home: Scaffold(body: Center(child: Text('Student Sathi')))));
+}
+
+// 1. currentNote Function
+dynamic currentNote(List<NotesRecord> notes, String noteId) {
+  final n = notes.where((n) => n.reference.id == noteId).firstOrNull;
   return n == null
       ? {}
       : {
@@ -31,26 +30,14 @@ dynamic currentNote(
           "content_body": n.content_body
         };
 }
-import 'dart:convert';
-import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
-import 'package:timeago/timeago.dart' as timeago;
-import '/flutter_flow/custom_functions.dart';
-import '/flutter_flow/lat_lng.dart';
-import '/flutter_flow/place.dart';
-import '/flutter_flow/uploaded_file.dart';
-import '/backend/backend.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import '/auth/firebase_auth/auth_util.dart';
-
+// 2. currentQuestion Function
 dynamic currentQuestion(List<QuestionsRecord> questions) {
   final all = questions;
   if (all.isEmpty) return {};
-  if (form.current_index >= all.length) return {};
-  final q = all[form.current_index];
+  // ध्यान दें: अगर 'form' की वजह से एरर आए, तो इसे FFAppState().current_index से बदलें
+  if (FFAppState().current_index >= all.length) return {};
+  final q = all[FFAppState().current_index];
   return {
     "id": q.id,
     "text": q.question_text,
@@ -61,81 +48,28 @@ dynamic currentQuestion(List<QuestionsRecord> questions) {
     "correct": q.correct_option,
   };
 }
-import 'dart:convert';
-import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
-import 'package:timeago/timeago.dart' as timeago;
-import '/flutter_flow/custom_functions.dart';
-import '/flutter_flow/lat_lng.dart';
-import '/flutter_flow/place.dart';
-import '/flutter_flow/uploaded_file.dart';
-import '/backend/backend.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import '/auth/firebase_auth/auth_util.dart';
-
+// 3. timerLabel Function
 String timerLabel() {
-  final m = (form.seconds_remaining / 60).floor();
-  final s = form.seconds_remaining % 60;
+  final m = (FFAppState().seconds_remaining / 60).floor();
+  final s = FFAppState().seconds_remaining % 60;
   return m.toString().padLeft(2, '0') + ":" + s.toString().padLeft(2, '0');
 }
-import 'dart:convert';
-import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
-import 'package:timeago/timeago.dart' as timeago;
-import '/flutter_flow/custom_functions.dart';
-import '/flutter_flow/lat_lng.dart';
-import '/flutter_flow/place.dart';
-import '/flutter_flow/uploaded_file.dart';
-import '/backend/backend.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import '/auth/firebase_auth/auth_util.dart';
-
+// 4. quizProgress Function
 double quizProgress(List<QuestionsRecord> questions) {
   final total = questions.length;
   if (total == 0) return 0.0;
-  return (form.current_index + 1).toDouble() / total.toDouble();
+  return (FFAppState().current_index + 1).toDouble() / total.toDouble();
 }
-import 'dart:convert';
-import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
-import 'package:timeago/timeago.dart' as timeago;
-import '/flutter_flow/custom_functions.dart';
-import '/flutter_flow/lat_lng.dart';
-import '/flutter_flow/place.dart';
-import '/flutter_flow/uploaded_file.dart';
-import '/backend/backend.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import '/auth/firebase_auth/auth_util.dart';
-
+// 5. filteredNotes Function
 List<NotesRecord> filteredNotes(List<NotesRecord> notes) {
   return notes;
 }
-import 'dart:convert';
-import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
-import 'package:timeago/timeago.dart' as timeago;
-import '/flutter_flow/custom_functions.dart';
-import '/flutter_flow/lat_lng.dart';
-import '/flutter_flow/place.dart';
-import '/flutter_flow/uploaded_file.dart';
-import '/backend/backend.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import '/auth/firebase_auth/auth_util.dart';
-
+// 6. dailyQuiz Function
 dynamic dailyQuiz(List<QuizzesRecord> quizzes) {
-  // Return the first quiz as the daily quiz for now
   final all = quizzes;
   if (all.isEmpty) return {};
   final q = all.first;
@@ -147,4 +81,3 @@ dynamic dailyQuiz(List<QuizzesRecord> quizzes) {
     "questions": q.question_count,
   };
 }
-
